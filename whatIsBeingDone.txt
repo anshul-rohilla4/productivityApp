@@ -1,0 +1,22 @@
+azure organization name- myProjectDevOps12
+
+single pipeline to deploy application to dev env and prod env
+
+
+setup infrastructure
+
+vm in aws acc of 8 gib ram ,in which SonarQube setup to  be done .this VM as an agent in azure devops.
+
+free acc on ms azure
+	two Kubernetes cluster
+		1. dev enc
+		2. prod env
+push source code to git repo
+
+create pipeline
+	code quality check
+	build docker image of each microservice component and push that image to dockerhub repos
+
+create cd pipeline to deploy first in dev env if no issue found push to prod env\
+
+using `mc1arke/sonarqube-with-community-branch-plugin` this docker for pre installed community plugin
