@@ -5,11 +5,19 @@ const App = () => {
     const [activity, setActivity] = useState("");
     const [time, setTime] = useState("");
     const [activities, setActivities] = useState([]);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const fetchActivities = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/activities`);
+                const response = await fetch(
+                    `${process.env.REACT_APP_BACKEND_URL}/activities`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
                 const data = await response.json();
                 setActivities(data);
             } catch (error) {
@@ -18,20 +26,24 @@ const App = () => {
         };
 
         fetchActivities();
-    }, []);
+    }, [token]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newActivity = { name: activity, time: time };
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/activity`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newActivity),
-            });
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/activity`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(newActivity),
+                }
+            );
 
             if (response.ok) {
                 console.log("Activity added successfully");
